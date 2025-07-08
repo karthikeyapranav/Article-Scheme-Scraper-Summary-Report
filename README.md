@@ -1,100 +1,123 @@
-# Article-Scheme-Scraper-Summary-Report
+# 🌐 Government & Enterprise Web Scrapers with Playwright: MyScheme + Microsoft Blogs
 
-This project contains a Python-based web scraper designed to extract detailed information about specific agricultural schemes from the MyScheme portal (myscheme.gov.in).
+[![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/)
+[![Playwright](https://img.shields.io/badge/Playwright-1.44%2B-2f96bd.svg?logo=playwright&logoColor=white)](https://playwright.dev/)
+[![Web Scraping](https://img.shields.io/badge/Web%20Scraping-Dynamic%20Content-orange.svg)](https://en.wikipedia.org/wiki/Web_scraping)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-## Overview
+This repository contains **two robust Playwright-based web scrapers** in Python designed to handle highly dynamic content:
 
-Due to the highly dynamic and frequently changing nature of the MyScheme portal's category listing pages and their underlying APIs, this scraper operates by processing a predefined list of direct URLs to individual scheme detail pages. This approach has proven to be the most reliable for consistent data extraction from this particular website.
+- **🟢 MyScheme Scraper:** Targets Indian Government Agricultural Schemes ([myscheme.gov.in](https://www.myscheme.gov.in))  
+- **🔵 Microsoft Blog/Documentation Scraper:** Targets dynamic content feeds and technical documentation pages from Microsoft domains (e.g., [learn.microsoft.com](https://learn.microsoft.com), [techcommunity.microsoft.com](https://techcommunity.microsoft.com))
 
-The scraper uses:
-- **Playwright:** For browser automation, allowing it to navigate to scheme pages, wait for dynamic content to load, scroll, interact with UI elements (like FAQ accordions), and extract visible text.
-- **Python's `requests` (briefly attempted for API, but reverted):** While an API-based approach was explored, it was found to be unreliable due to changing API endpoints and payloads.
+---
 
-## Features
+## 🎯 Why Two Scrapers?
 
-- Scrapes detailed information for a list of specified scheme URLs.
-- Extracts:
-    - Scheme Title
-    - Scheme Link (the URL itself)
-    - Full Scheme Content/Description
-    - Eligibility Criteria
-    - Frequently Asked Questions (FAQs) - including questions and answers.
-- Handles dynamic content loading on detail pages through scrolling and strategic pauses.
-- Interacts with accordion elements (e.g., for FAQs) to reveal hidden content.
-- Saves extracted data to both JSON and CSV formats.
+Modern websites frequently load content dynamically using JavaScript. This makes traditional scraping tools like `requests + BeautifulSoup` insufficient. Both **MyScheme** and **Microsoft Docs/Blogs** fall into this category:
 
-## Setup and Installation
+| Feature | MyScheme | Microsoft Docs/Blogs |
+|--------|----------|-----------------------|
+| Dynamic JS Content | ✅ | ✅ |
+| Collapsible Sections (FAQs, Accordions) | ✅ | ✅ |
+| API Instability | ✅ | ✅ |
+| Requires Browser Automation | ✅ | ✅ |
 
-### Prerequisites
+This repo demonstrates **browser-based scraping using Playwright** to robustly extract all such content.
 
-- Python 3.8 or higher
-- `pip` (Python package installer)
+---
 
-### Installation Steps
+## 🟢 Scraper 1: MyScheme Agricultural Schemes (myscheme.gov.in)
 
-1.  **Clone the repository (or set up your project structure):**
-    ```bash
-    git clone <your-repo-link>
-    cd scheme_scraper # Or your project directory name
-    ```
+### 🧩 Challenges:
+- JS-rendered scheme descriptions, eligibility, and FAQs.
+- Dynamic collapsible content.
+- Inconsistent API responses.
 
-2.  **Install Python dependencies:**
-    This project requires `playwright` and `requests`.
+### 🛠️ Approach:
+- Use **Playwright** to launch a browser.
+- Navigate to **direct scheme detail URLs**.
+- Expand and scroll content.
+- Scrape:
+  - Scheme title
+  - Full description
+  - Eligibility criteria
+  - FAQ (Q&A pairs)
 
-    ```bash
-    pip install playwright requests
-    ```
+### 📁 Output:
+- `myscheme_agriculture.json`
+- `myscheme_agriculture.csv`
+- `summary_report_myscheme_portal_(agriculture).txt`
 
-3.  **Install Playwright browser binaries:**
-    After installing the Playwright Python library, you need to install the browser engines (Chromium, Firefox, WebKit) that Playwright controls.
+> ✨ Located in the `/scrapers/myscheme_scraper.py`
 
-    ```bash
-    playwright install
-    ```
-    *(Note: You only need Chromium for this project, but `playwright install` installs all by default, which is usually fine.)*
+---
 
-## Usage
+## 🔵 Scraper 2: Microsoft Documentation / Blog Scraper
 
-1.  **Define Scheme URLs:**
-    Open the `scrapers/myscheme.py` file.
-    Locate the `self.specific_scheme_urls` list within the `MySchemeScraper` class's `__init__` method.
-    Add or remove the direct URLs of the MyScheme pages you wish to scrape from this list.
+### 🧩 Challenges:
+- Blogs and docs pages often render content dynamically.
+- Documentation might use complex nested structures (shadow DOM, lazy loading).
+- Volatile HTML structures and selectors.
+- Rate-limiting and bot detection on Microsoft domains.
 
-    ```python
-    self.specific_scheme_urls = [
-        "[https://www.myscheme.gov.in/schemes/icdpsva-srgu](https://www.myscheme.gov.in/schemes/icdpsva-srgu)",
-        "[https://www.myscheme.gov.in/schemes/anby](https://www.myscheme.gov.in/schemes/anby)",
-        "[https://www.myscheme.gov.in/schemes/ncrfs](https://www.myscheme.gov.in/schemes/ncrfs)",
-        "[https://www.myscheme.gov.in/schemes/fapllf](https://www.myscheme.gov.in/schemes/fapllf)",
-        "[https://www.myscheme.gov.in/schemes/cdpnerqucsecoc](https://www.myscheme.gov.in/schemes/cdpnerqucsecoc)"
-    ]
-    ```
+### 🛠️ Approach:
+- Use **Playwright** to open Microsoft blog/doc pages.
+- Wait for content blocks to render using `page.wait_for_selector`.
+- Expand hidden sections (e.g., “Show More”, code blocks, FAQs).
+- Scrape:
+  - Blog/document title
+  - Author, publish date (if available)
+  - Main article content
+  - Tags or categories (if present)
 
-2.  **Run the Scraper:**
-    Navigate to your project's root directory in your terminal (where `main.py` is located).
-    Execute the `main.py` script:
+### 📁 Output:
+- `microsoft_docs_output.json`
+- `microsoft_docs_output.csv`
+- `microsoft_summary_report.txt`
 
-    ```bash
-    python main.py
-    ```
+> ✨ Located in the `/scrapers/microsoft_scraper.py`
 
-    A Chromium browser window will open, and you will observe it navigating to each specified scheme page, scrolling, and interacting with elements.
+---
 
-## Output
+🚀 Setup & Run
+🔧 Install Dependencies
 
-The scraped data will be saved in the `output/` directory (created automatically if it doesn't exist) as:
+pip install -r requirements.txt
+playwright install
+▶️ Run MyScheme Scraper
 
--   `myscheme_agriculture.json`: Structured data in JSON format.
--   `myscheme_agriculture.csv`: Tabular data in CSV format.
--   `summary_report_myscheme_portal_(agriculture).txt`: A brief summary of the scraping run.
+python scrapers/myscheme_scraper.py
+▶️ Run Microsoft Scraper
 
-## Troubleshooting
+python scrapers/microsoft_scraper.py
+🛠 Common Playwright Tricks Used
+page.wait_for_selector() – Waits for dynamic content to load.
 
--   **`Page.wait_for_selector: Timeout ... exceeded.`**: This error indicates that Playwright could not find a specific HTML element within the given time. While this version of the code uses specific URLs, if this error occurs on a *detail page*, it means the selectors for content, eligibility, or FAQs might need updating. Inspect the specific scheme page manually (with `headless=False` during runtime) and adjust the selectors in `myscheme.py` accordingly.
--   **`playwright install` fails**: Ensure you have a stable internet connection and sufficient disk space. Sometimes, running `pip install --upgrade playwright` first, then `playwright install`, can help.
--   **No data in output files**: Check the console output for any `Error scraping full scheme details from...` messages. This will indicate which links failed.
--   **Website Changes**: MyScheme is a dynamic website. If the structure of individual scheme detail pages changes significantly, the existing CSS/XPath selectors in `myscheme.py` for content, eligibility, and FAQs may become outdated. Manual inspection and updating of these selectors will be required.
+page.click() – Expands accordion or hidden sections.
 
-## Contribution
+page.evaluate("window.scrollTo(...)") – Triggers lazy-loaded content.
 
-If you identify more robust selectors or improvements for this scraper, feel free to suggest them!
+Headless mode toggle for debugging.
+
+try-except for selector failures and fallback parsing.
+
+⚠️ Troubleshooting
+Timeout on selector: Page changed; inspect and update selectors.
+
+Empty fields: Element not found or dynamically added late.
+
+Bot detection: Use random delays and headers if scraping Microsoft at scale.
+
+🤝 Contribution
+Contributions welcome! Feel free to submit PRs with:
+
+Updated selectors
+
+Retry mechanisms
+
+Headless fallback logic
+
+Output format improvements (Markdown export, PDF, etc.)
+
+
