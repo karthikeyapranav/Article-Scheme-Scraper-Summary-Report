@@ -1,4 +1,4 @@
-# 🌐 Government & Enterprise Web Scrapers with Playwright: MyScheme + Microsoft Blogs
+#  Government & Enterprise Web Scrapers with Playwright: MyScheme + Microsoft Blogs
 
 [![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/)
 [![Playwright](https://img.shields.io/badge/Playwright-1.44%2B-2f96bd.svg?logo=playwright&logoColor=white)](https://playwright.dev/)
@@ -7,34 +7,34 @@
 
 This repository contains **two robust Playwright-based web scrapers** in Python designed to handle highly dynamic content:
 
-- **🟢 MyScheme Scraper:** Targets Indian Government Agricultural Schemes ([myscheme.gov.in](https://www.myscheme.gov.in))  
-- **🔵 Microsoft Blog/Documentation Scraper:** Targets dynamic content feeds and technical documentation pages from Microsoft domains (e.g., [learn.microsoft.com](https://learn.microsoft.com), [techcommunity.microsoft.com](https://techcommunity.microsoft.com))
+- ** MyScheme Scraper:** Targets Indian Government Agricultural Schemes ([myscheme.gov.in](https://www.myscheme.gov.in))  
+- ** Microsoft Blog/Documentation Scraper:** Targets dynamic content feeds and technical documentation pages from Microsoft domains (e.g., [learn.microsoft.com](https://learn.microsoft.com), [techcommunity.microsoft.com](https://techcommunity.microsoft.com))
 
 ---
 
-## 🎯 Why Two Scrapers?
+##  Why Two Scrapers?
 
 Modern websites frequently load content dynamically using JavaScript. This makes traditional scraping tools like `requests + BeautifulSoup` insufficient. Both **MyScheme** and **Microsoft Docs/Blogs** fall into this category:
 
 | Feature | MyScheme | Microsoft Docs/Blogs |
 |--------|----------|-----------------------|
-| Dynamic JS Content | ✅ | ✅ |
-| Collapsible Sections (FAQs, Accordions) | ✅ | ✅ |
-| API Instability | ✅ | ✅ |
-| Requires Browser Automation | ✅ | ✅ |
+| Dynamic JS Content | yes | yes |
+| Collapsible Sections (FAQs, Accordions) | yes | yes |
+| API Instability | yes | yes |
+| Requires Browser Automation | yes | yes |
 
 This repo demonstrates **browser-based scraping using Playwright** to robustly extract all such content.
 
 ---
 
-## 🟢 Scraper 1: MyScheme Agricultural Schemes (myscheme.gov.in)
+##  Scraper 1: MyScheme Agricultural Schemes (myscheme.gov.in)
 
-### 🧩 Challenges:
+###  Challenges:
 - JS-rendered scheme descriptions, eligibility, and FAQs.
 - Dynamic collapsible content.
 - Inconsistent API responses.
 
-### 🛠️ Approach:
+###  Approach:
 - Use **Playwright** to launch a browser.
 - Navigate to **direct scheme detail URLs**.
 - Expand and scroll content.
@@ -44,24 +44,24 @@ This repo demonstrates **browser-based scraping using Playwright** to robustly e
   - Eligibility criteria
   - FAQ (Q&A pairs)
 
-### 📁 Output:
+###  Output:
 - `myscheme_agriculture.json`
 - `myscheme_agriculture.csv`
 - `summary_report_myscheme_portal_(agriculture).txt`
 
-> ✨ Located in the `/scrapers/myscheme_scraper.py`
+>  Located in the `/scrapers/myscheme_scraper.py`
 
 ---
 
-## 🔵 Scraper 2: Microsoft Documentation / Blog Scraper
+##  Scraper 2: Microsoft Documentation / Blog Scraper
 
-### 🧩 Challenges:
+###  Challenges:
 - Blogs and docs pages often render content dynamically.
 - Documentation might use complex nested structures (shadow DOM, lazy loading).
 - Volatile HTML structures and selectors.
 - Rate-limiting and bot detection on Microsoft domains.
 
-### 🛠️ Approach:
+###  Approach:
 - Use **Playwright** to open Microsoft blog/doc pages.
 - Wait for content blocks to render using `page.wait_for_selector`.
 - Expand hidden sections (e.g., “Show More”, code blocks, FAQs).
@@ -71,27 +71,27 @@ This repo demonstrates **browser-based scraping using Playwright** to robustly e
   - Main article content
   - Tags or categories (if present)
 
-### 📁 Output:
+###  Output:
 - `microsoft_docs_output.json`
 - `microsoft_docs_output.csv`
 - `microsoft_summary_report.txt`
 
-> ✨ Located in the `/scrapers/microsoft_scraper.py`
+>  Located in the `/scrapers/microsoft_scraper.py`
 
 ---
 
-🚀 Setup & Run
-🔧 Install Dependencies
+ ## Setup & Run
+ # Install Dependencies
 
 pip install -r requirements.txt
 playwright install
-▶️ Run MyScheme Scraper
+ Run MyScheme Scraper
 
 python scrapers/myscheme_scraper.py
-▶️ Run Microsoft Scraper
+ Run Microsoft Scraper
 
 python scrapers/microsoft_scraper.py
-🛠 Common Playwright Tricks Used
+ Common Playwright Tricks Used
 page.wait_for_selector() – Waits for dynamic content to load.
 
 page.click() – Expands accordion or hidden sections.
@@ -102,14 +102,14 @@ Headless mode toggle for debugging.
 
 try-except for selector failures and fallback parsing.
 
-⚠️ Troubleshooting
+ # Troubleshooting
 Timeout on selector: Page changed; inspect and update selectors.
 
 Empty fields: Element not found or dynamically added late.
 
 Bot detection: Use random delays and headers if scraping Microsoft at scale.
 
-🤝 Contribution
+#  Contribution
 Contributions welcome! Feel free to submit PRs with:
 
 Updated selectors
